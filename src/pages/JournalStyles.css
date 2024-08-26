@@ -1,0 +1,91 @@
+/* //-----------------------------------------------calender---------------------------------------------- */
+.calendar {
+  position: relative;
+  max-width: 600px;
+  margin: 40px auto;
+  border: 1px solid #ccc;
+}
+
+.header {
+  background-color: #f4f4f4;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.cell {
+  height: 50px;
+  text-align: center;
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}
+
+.cell:last-child {
+  border-right: none;
+}
+
+.days .col {
+  font-weight: bold;
+}
+
+.selected {
+  background-color: #90caf9;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.vertical-text {
+  writing-mode: vertical-lr;
+  transform: rotate(180deg);
+  position: absolute;
+  right: -50px;
+  top: 50px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+/* Hide scrollbar */
+.calender-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.calender-scrollbar {
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* //---------------------card in cells--------------- */
+
+.card {
+  position: relative;
+  background-color: #666; /* Dark gray */
+  border-radius: 8px 8px 0 0; /* Top left and top right corners only */
+  height: 100px;
+  margin-top: -80px; /* Adjust to control overlap upwards */
+  transition: all 0.3s ease;
+}
+
+.card:first-child {
+  z-index: 1;
+  transform: scale(0.9); /* Even smaller */
+  background-color: #aaa; /* Even lighter gray */
+}
+
+.card:nth-child(2) {
+  z-index: 2;
+  transform: scale(0.95); /* Slightly smaller */
+  background-color: #888; /* Lighter gray */
+}
+
+.card:nth-child(3) {
+  z-index: 3; /* Ensures the first card is at the bottom */
+}
+
+/* //---------------------------------------------------------------------------------------------------- */

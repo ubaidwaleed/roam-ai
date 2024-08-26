@@ -1,0 +1,22 @@
+.custom-select-bg {
+  background-color: #4a90e2 !important; /* Replace #4a90e2 with your desired color */
+}
+
+.custom-dashed-line {
+  width: 0.1rem;
+  background-image: linear-gradient(
+    to bottom,
+    rgb(191, 191, 191) 45%,
+    rgba(255, 255, 255, 0) 0%
+  );
+  background-position: left;
+  background-size: 3px 20px;
+  background-repeat: repeat-y;
+}
+
+/* In your CSS file */
+.custom-modal {
+  border-radius: 1.25rem !important; /* Using !important to ensure it overrides default styles */
+  padding: 2rem;
+  background-color: white;
+}
