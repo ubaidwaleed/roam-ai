@@ -6,11 +6,18 @@ import { Button, Group, TextInput, Menu, Select } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa6";
 import { FaWandMagicSparkles } from "react-icons/fa6";
+import { MdImage } from "react-icons/md"; // Import appropriate icons
+import { ImParagraphLeft } from "react-icons/im";
+import { FaHeading } from "react-icons/fa6";
+import { MdEdit, MdDelete } from "react-icons/md"; // Import appropriate icons
+import { IoCheckmarkDoneSharp } from "react-icons/io5";
 
 import { DndContext, DragOverlay } from "@dnd-kit/core";
 import { SortableContext, useSortable, arrayMove } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { MdFileDownloadDone } from "react-icons/md";
+import { PiNotebookFill } from "react-icons/pi";
+import { HiOutlineTrash } from "react-icons/hi2";
 
 import { PiDotsNineBold } from "react-icons/pi";
 
@@ -35,7 +42,7 @@ function SortableElement({ id, type, content }) {
       {...attributes}
       {...listeners}
       style={baseStyle}
-      className="relative w-full mb-4 bg-transparent"
+      className="relative w-full mb-5 bg-transparent"
     >
       <div
         className={`relative z-10 w-full px-2 rounded focus:outline-none font-gluteen ${
@@ -320,23 +327,18 @@ const Memory2 = () => {
                     className="flex flex-row items-center p-2 space-x-3 cursor-pointer hover:bg-gray-200 hover:rounded-lg"
                     onClick={() => handleOptionClick("Add new page")}
                   >
-                    <img
-                      alt="add-new"
-                      src="/images/menu-board.png"
-                      className="w-auto h-full"
-                    />
-                    <span className="text-[#4c4c7c]">Add new page</span>
+                    <PiNotebookFill className="text-[#4c4c7c] text-2xl" />
+                    <span className="text-[#4c4c7c] text-lg">Add new page</span>
                   </div>
                   <div
                     className="flex flex-row items-center p-2 space-x-3 cursor-pointer hover:bg-gray-200 hover:rounded-lg"
                     onClick={() => handleOptionClick("Delete this page")}
                   >
-                    <img
-                      alt="delete"
-                      src="/images/delete.png"
-                      className="w-auto h-full"
-                    />
-                    <span className="text-[#4c4c7c]">Delete this page</span>
+                    <HiOutlineTrash className="text-[#4c4c7c] text-2xl" />
+
+                    <span className="text-[#4c4c7c] text-lg">
+                      Delete this page
+                    </span>
                   </div>
                 </div>
               )}
@@ -391,30 +393,54 @@ const Memory2 = () => {
               </Button>
             </div>
           </div>
-          <div className="w-full h-full pt-4 pr-4 overflow-y-auto bg-white pb-28">
+          <div className="w-full h-full pt-4 pr-4 overflow-y-auto bg-white pb-28 ">
             <div className="relative ">
               {showInput && (
                 <div className="flex flex-row mt-4 space-x-4">
-                  <Menu>
+                  <Menu position="right" offset={6}>
                     <Menu.Target>
                       <div className="w-12">
-                        <Button className="mb-4 " variant="transparent">
-                          <PiDotsNineBold className="text-4xl text-[#373784] rounded-lg hover:bg-[#e5e5ff]" />
+                        <Button className="" variant="transparent">
+                          <PiDotsNineBold className="text-4xl text-[#373784] hover:bg-[#e5e5ff] rounded-lg" />
                         </Button>
                       </div>
                     </Menu.Target>
                     <Menu.Dropdown>
-                      <Menu.Item onClick={() => setSelectedOption("paragraph")}>
+                      <Menu.Item
+                        rightSection={
+                          <ImParagraphLeft className="text-lg text-[#373784]" />
+                        }
+                        onClick={() => setSelectedOption("paragraph")}
+                        className="font-lexend"
+                      >
                         Paragraph
                       </Menu.Item>
-                      <Menu.Item onClick={() => setSelectedOption("heading")}>
+                      <Menu.Item
+                        rightSection={
+                          <FaHeading className="text-lg text-[#373784]" />
+                        }
+                        onClick={() => setSelectedOption("heading")}
+                        className="font-lexend"
+                      >
                         Heading
                       </Menu.Item>
-                      <Menu.Item onClick={() => setSelectedOption("image")}>
+                      <Menu.Item
+                        rightSection={
+                          <MdImage className="text-lg text-[#373784]" />
+                        }
+                        onClick={() => setSelectedOption("image")}
+                        className="font-lexend"
+                      >
                         Image
                       </Menu.Item>
-                      <Menu.Item onClick={handleAddElement}>
-                        <MdFileDownloadDone /> {selectedOption}
+                      <Menu.Item
+                        rightSection={
+                          <MdFileDownloadDone className="text-lg text-[#373784]" />
+                        }
+                        onClick={handleAddElement}
+                        className="font-lexend"
+                      >
+                        Add {selectedOption}
                       </Menu.Item>
                     </Menu.Dropdown>
                   </Menu>
@@ -485,33 +511,31 @@ const Memory2 = () => {
                             >
                               <div>
                                 {editingId === el.id ? (
-                                  <Menu>
+                                  <Menu position="right">
                                     <Menu.Target>
-                                      <div className="w-16">
-                                        <Button
-                                          className="mb-4 "
-                                          variant="transparent"
-                                        >
+                                      <div className="w-12">
+                                        <Button variant="transparent">
                                           <PiDotsNineBold className="text-4xl text-[#373784] rounded-lg hover:bg-[#e5e5ff]" />
                                         </Button>
                                       </div>
                                     </Menu.Target>
                                     <Menu.Dropdown>
                                       <Menu.Item
+                                        rightSection={
+                                          <IoCheckmarkDoneSharp className="text-lg text-[#373784]" />
+                                        }
                                         onClick={() => saveEdit(el.id)}
+                                        className="font-lexend"
                                       >
                                         Save
                                       </Menu.Item>
                                     </Menu.Dropdown>
                                   </Menu>
                                 ) : (
-                                  <Menu>
+                                  <Menu position="right">
                                     <Menu.Target>
-                                      <div className="w-16">
-                                        <Button
-                                          className="mb-4 "
-                                          variant="transparent"
-                                        >
+                                      <div className="w-12">
+                                        <Button variant="transparent">
                                           <PiDotsNineBold className="text-4xl text-[#373784] rounded-lg hover:bg-[#e5e5ff]" />
                                         </Button>
                                       </div>
@@ -519,6 +543,9 @@ const Memory2 = () => {
                                     <Menu.Dropdown>
                                       {el.type !== "image" && (
                                         <Menu.Item
+                                          rightSection={
+                                            <MdEdit className="text-lg text-[#373784]" />
+                                          }
                                           onClick={() =>
                                             startEditing(
                                               el.id,
@@ -526,12 +553,17 @@ const Memory2 = () => {
                                               el.content
                                             )
                                           }
+                                          className="font-lexend"
                                         >
                                           Edit
                                         </Menu.Item>
                                       )}
                                       <Menu.Item
+                                        rightSection={
+                                          <MdDelete className="text-lg text-[#373784]" />
+                                        }
                                         onClick={() => deletePara(el.id)}
+                                        className="font-lexend"
                                       >
                                         Delete
                                       </Menu.Item>

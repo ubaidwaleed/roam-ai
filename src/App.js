@@ -13,8 +13,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/journal" element={<Journal />} />
         <Route path="/journal1" element={<Journal1 />} />
-        <Route path="/journal/memory" element={<Memory />} />
-        <Route path="/journal/memory2" element={<Memory2 />} />
+        <Route path="/journal/memory2" element={<Memory />} />
+        <Route path="/journal/memory" element={<Memory2 />} />
       </Routes>
     </div>
   );
