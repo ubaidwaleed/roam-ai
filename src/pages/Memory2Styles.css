@@ -1,0 +1,9 @@
+/* Hide scrollbar */
+.journal-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.journal-scrollbar {
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+}

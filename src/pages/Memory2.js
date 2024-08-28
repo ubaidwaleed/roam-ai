@@ -742,7 +742,7 @@ function Element({ type, content }) {
             key={index}
             src={imgSrc}
             alt={`Uploaded ${index}`}
-            className="flex-initial h-auto rounded w-96" // Ensures images keep their original size and do not stretch
+            className="flex-initial object-contain rounded max-w-max max-h-56"
             style={{ maxWidth: "100%" }} // Ensures images do not exceed the viewport width
           />
         ))}
@@ -1127,10 +1127,10 @@ const Memory2 = () => {
               </Button>
             </div>
           </div>
-          <div className="w-full h-[100vh] pt-20 pb-28 pr-4 overflow-y-auto bg-white ">
-            <div className="relative flex">
+          <div className="w-full pt-4 pr-4 bg-white pb-28 ">
+            <div className="relative flex h-[80vh] bg-white">
               {/* left page */}
-              <div className="flex flex-col w-1/2">
+              <div className="flex flex-col w-1/2 h-[80vh] overflow-y-auto journal-scrollbar">
                 {/* Display added elements with drag and drop functionality */}
                 {elements.length > 0 && (
                   <DndContext onDragEnd={onDragEnd}>
@@ -1371,8 +1371,12 @@ const Memory2 = () => {
                   </div>
                 )}
               </div>
+
+              <div className="relative w-0.5 bg-transparent ml-4">
+                <div className="absolute inset-y-0 transform -translate-x-1/2 border-l-2 border-gray-400 border-dashed left-1/2"></div>
+              </div>
               {/* right page */}
-              <div className="flex flex-col w-1/2">
+              <div className="flex flex-col w-1/2 h-[80vh] overflow-y-auto journal-scrollbar">
                 {/* Display added elements with drag and drop functionality */}
                 {elements2.length > 0 && (
                   <DndContext onDragEnd={onDragEnd2}>
