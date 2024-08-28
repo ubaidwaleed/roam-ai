@@ -679,6 +679,7 @@ import { PiDotsNineBold } from "react-icons/pi";
 import "./Memory2Styles.css";
 
 import "react-quill/dist/quill.snow.css";
+import { secondsToHours } from "date-fns";
 
 function SortableElement({ id, type, content }) {
   const { attributes, listeners, setNodeRef, transform, transition } =
@@ -807,6 +808,8 @@ const Memory2 = () => {
   const [showInput2, setShowInput2] = useState(false);
 
   const [showPlus, setShowPlus] = useState(false);
+  const [showPlus2, setShowPlus2] = useState(false);
+
   const [editingId, setEditingId] = useState(null); // Track the editing element
   const [editingContent, setEditingContent] = useState(""); // Track the content being edited
   const inputRef = useRef(null);
@@ -824,6 +827,7 @@ const Memory2 = () => {
         { id: elements.length, type: selectedOption, content: text },
       ]);
       setText("");
+      setSelectedOption("paragraph");
     }
     setShowInput(false);
     setShowPlus(true);
@@ -856,6 +860,7 @@ const Memory2 = () => {
         reader.readAsDataURL(file);
       });
     }
+    setSelectedOption("paragraph");
   };
   const onDragEnd = (event) => {
     const { active, over } = event;
@@ -885,6 +890,35 @@ const Memory2 = () => {
     setEditingId(null);
   };
 
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const checkHeight = () => {
+      if (containerRef.current) {
+        const containerHeight = containerRef.current.clientHeight;
+        console.log("Container Height:", containerHeight); // Debugging line
+        // Check if the container's height is less than 70% of the viewport's height
+        if (containerHeight < 0.7 * window.innerHeight) {
+          setShowPlus(true); // Hide the plus icon
+          setShowPlus2(false); // Hide the plus icon
+        } else {
+          setShowPlus(false); // Hide the plus icon
+          setShowPlus2(true); // Hide the plus icon
+        }
+      }
+    };
+
+    // Run checkHeight on mount and when elements array changes
+    checkHeight();
+
+    // Also check height after adding a new element
+    window.addEventListener("resize", checkHeight);
+
+    return () => {
+      window.removeEventListener("resize", checkHeight);
+    };
+  }, [elements]);
+
   //--------------------------------------------------------right side--------------------------------------//
 
   const handleAddElement2 = () => {
@@ -896,6 +930,7 @@ const Memory2 = () => {
         { id: elements2.length + 10, type: selectedOption, content: text },
       ]);
       setText("");
+      setSelectedOption("paragraph");
     }
     setShowInput2(false);
     setShowPlus(true);
@@ -927,6 +962,7 @@ const Memory2 = () => {
         };
         reader.readAsDataURL(file);
       });
+      setSelectedOption("paragraph");
     }
   };
   const onDragEnd2 = (event) => {
@@ -956,6 +992,32 @@ const Memory2 = () => {
     );
     setEditingId(null);
   };
+
+  const containerRef2 = useRef(null);
+
+  useEffect(() => {
+    const checkHeight = () => {
+      if (containerRef2.current) {
+        const containerHeight = containerRef2.current.clientHeight;
+        console.log("Container Height:", containerHeight); // Debugging line
+        if (containerHeight < 0.7 * window.innerHeight) {
+        } else {
+          setShowPlus2(false); // Hide the plus icon
+          setShowPlus(false);
+        }
+      }
+    };
+
+    // Run checkHeight on mount and when elements array changes
+    checkHeight();
+
+    // Also check height after adding a new element
+    window.addEventListener("resize", checkHeight);
+
+    return () => {
+      window.removeEventListener("resize", checkHeight);
+    };
+  }, [elements2]);
 
   //------------------------------------------------------------------------------------------------//
   // const startEditing = (id, content) => {
@@ -1131,492 +1193,508 @@ const Memory2 = () => {
             <div className="relative flex h-[80vh] bg-white">
               {/* left page */}
               <div className="flex flex-col w-1/2 h-[80vh] overflow-y-auto journal-scrollbar">
-                {/* Display added elements with drag and drop functionality */}
-                {elements.length > 0 && (
-                  <DndContext onDragEnd={onDragEnd}>
-                    <SortableContext items={elements.map((e) => e.id)}>
-                      <div className="py-4 mt-4 font-gluteen">
-                        {elements.slice().map((el) => (
-                          <div key={el.id} className="flex flex-row space-x-2">
-                            <div>
-                              {editingId === el.id ? (
-                                <Menu position="right">
-                                  <Menu.Target>
-                                    <div className="w-12">
-                                      <Button variant="transparent">
-                                        <PiDotsNineBold className="text-4xl text-[#373784] rounded-lg hover:bg-[#e5e5ff]" />
-                                      </Button>
-                                    </div>
-                                  </Menu.Target>
-                                  <Menu.Dropdown>
-                                    <Menu.Item
-                                      rightSection={
-                                        <IoCheckmarkDoneSharp className="text-lg text-[#373784]" />
-                                      }
-                                      onClick={() => saveEdit(el.id)}
-                                      className="font-lexend"
-                                    >
-                                      Save
-                                    </Menu.Item>
-                                  </Menu.Dropdown>
-                                </Menu>
-                              ) : (
-                                <Menu position="right">
-                                  <Menu.Target>
-                                    <div className="w-12">
-                                      <Button variant="transparent">
-                                        <PiDotsNineBold className="text-4xl text-[#373784] rounded-lg hover:bg-[#e5e5ff]" />
-                                      </Button>
-                                    </div>
-                                  </Menu.Target>
-                                  <Menu.Dropdown>
-                                    {el.type !== "image" && (
+                <div ref={containerRef}>
+                  {/* Display added elements with drag and drop functionality */}
+                  {elements.length > 0 && (
+                    <DndContext onDragEnd={onDragEnd}>
+                      <SortableContext items={elements.map((e) => e.id)}>
+                        <div className="py-4 mt-4 font-gluteen">
+                          {elements.slice().map((el) => (
+                            <div
+                              key={el.id}
+                              className="flex flex-row space-x-2"
+                            >
+                              <div>
+                                {editingId === el.id ? (
+                                  <Menu position="right">
+                                    <Menu.Target>
+                                      <div className="w-12">
+                                        <Button variant="transparent">
+                                          <PiDotsNineBold className="text-4xl text-[#373784] rounded-lg hover:bg-[#e5e5ff]" />
+                                        </Button>
+                                      </div>
+                                    </Menu.Target>
+                                    <Menu.Dropdown>
                                       <Menu.Item
                                         rightSection={
-                                          <MdEdit className="text-lg text-[#373784]" />
+                                          <IoCheckmarkDoneSharp className="text-lg text-[#373784]" />
                                         }
-                                        onClick={() =>
-                                          startEditing(
-                                            el.id,
-                                            el.type,
-                                            el.content
-                                          )
-                                        }
+                                        onClick={() => saveEdit(el.id)}
                                         className="font-lexend"
                                       >
-                                        Edit
+                                        Save
                                       </Menu.Item>
-                                    )}
-                                    <Menu.Item
-                                      rightSection={
-                                        <MdDelete className="text-lg text-[#373784]" />
-                                      }
-                                      onClick={() => deletePara(el.id)}
-                                      className="font-lexend"
-                                    >
-                                      Delete
-                                    </Menu.Item>
-                                  </Menu.Dropdown>
-                                </Menu>
+                                    </Menu.Dropdown>
+                                  </Menu>
+                                ) : (
+                                  <Menu position="right">
+                                    <Menu.Target>
+                                      <div className="w-12">
+                                        <Button variant="transparent">
+                                          <PiDotsNineBold className="text-4xl text-[#373784] rounded-lg hover:bg-[#e5e5ff]" />
+                                        </Button>
+                                      </div>
+                                    </Menu.Target>
+                                    <Menu.Dropdown>
+                                      {el.type !== "image" && (
+                                        <Menu.Item
+                                          rightSection={
+                                            <MdEdit className="text-lg text-[#373784]" />
+                                          }
+                                          onClick={() =>
+                                            startEditing(
+                                              el.id,
+                                              el.type,
+                                              el.content
+                                            )
+                                          }
+                                          className="font-lexend"
+                                        >
+                                          Edit
+                                        </Menu.Item>
+                                      )}
+                                      <Menu.Item
+                                        rightSection={
+                                          <MdDelete className="text-lg text-[#373784]" />
+                                        }
+                                        onClick={() => deletePara(el.id)}
+                                        className="font-lexend"
+                                      >
+                                        Delete
+                                      </Menu.Item>
+                                    </Menu.Dropdown>
+                                  </Menu>
+                                )}
+                              </div>
+                              {editingId === el.id ? (
+                                <div className="relative w-full">
+                                  <textarea
+                                    value={editingContent}
+                                    onChange={(e) =>
+                                      setEditingContent(e.target.value)
+                                    }
+                                    placeholder={`Type your ${selectedOption} here...`}
+                                    className={`relative z-10 w-full px-2 rounded focus:outline-none font-gluteen ${
+                                      selectedOption === "heading"
+                                        ? "font-bold"
+                                        : "text-base"
+                                    }`}
+                                    style={{
+                                      resize: "none",
+                                      overflow: "hidden",
+                                      minHeight: "2em",
+                                      background: "transparent",
+                                      lineHeight:
+                                        selectedOption === "heading"
+                                          ? "1.5em"
+                                          : "1.3em",
+                                      fontSize:
+                                        selectedOption === "heading"
+                                          ? "2rem"
+                                          : "1.5rem",
+                                    }}
+                                    ref={textareaRefEdit}
+                                  />
+                                  <div
+                                    className="absolute top-0 left-0 z-0 w-full h-full"
+                                    style={{
+                                      backgroundImage:
+                                        "linear-gradient(to bottom, rgba(128, 128, 128, 0.2) 1px, transparent 1px)",
+                                      backgroundSize:
+                                        selectedOption === "heading"
+                                          ? "100% 48px"
+                                          : "100% 30px",
+                                      filter: "blur(0.5px)",
+                                      pointerEvents: "none",
+                                    }}
+                                  ></div>
+                                </div>
+                              ) : (
+                                <SortableElement
+                                  id={el.id}
+                                  type={el.type}
+                                  content={el.content}
+                                />
                               )}
                             </div>
-                            {editingId === el.id ? (
-                              <div className="relative w-full">
-                                <textarea
-                                  value={editingContent}
-                                  onChange={(e) =>
-                                    setEditingContent(e.target.value)
-                                  }
-                                  placeholder={`Type your ${selectedOption} here...`}
-                                  className={`relative z-10 w-full px-2 rounded focus:outline-none font-gluteen ${
-                                    selectedOption === "heading"
-                                      ? "font-bold"
-                                      : "text-base"
-                                  }`}
-                                  style={{
-                                    resize: "none",
-                                    overflow: "hidden",
-                                    minHeight: "2em",
-                                    background: "transparent",
-                                    lineHeight:
-                                      selectedOption === "heading"
-                                        ? "1.5em"
-                                        : "1.3em",
-                                    fontSize:
-                                      selectedOption === "heading"
-                                        ? "2rem"
-                                        : "1.5rem",
-                                  }}
-                                  ref={textareaRefEdit}
-                                />
-                                <div
-                                  className="absolute top-0 left-0 z-0 w-full h-full"
-                                  style={{
-                                    backgroundImage:
-                                      "linear-gradient(to bottom, rgba(128, 128, 128, 0.2) 1px, transparent 1px)",
-                                    backgroundSize:
-                                      selectedOption === "heading"
-                                        ? "100% 48px"
-                                        : "100% 30px",
-                                    filter: "blur(0.5px)",
-                                    pointerEvents: "none",
-                                  }}
-                                ></div>
-                              </div>
-                            ) : (
-                              <SortableElement
-                                id={el.id}
-                                type={el.type}
-                                content={el.content}
-                              />
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    </SortableContext>
-                    <DragOverlay>
-                      {/* Render active item during drag */}
-                    </DragOverlay>
-                  </DndContext>
-                )}
-                {showInput && (
-                  <div className="flex flex-row mt-4 space-x-4">
-                    <Menu position="right" offset={6}>
-                      <Menu.Target>
-                        <div className="w-12">
-                          <Button className="" variant="transparent">
-                            <PiDotsNineBold className="text-4xl text-[#373784] hover:bg-[#e5e5ff] rounded-lg" />
-                          </Button>
+                          ))}
                         </div>
-                      </Menu.Target>
-                      <Menu.Dropdown>
-                        <Menu.Item
-                          rightSection={
-                            <ImParagraphLeft className="text-lg text-[#373784]" />
-                          }
-                          onClick={() => setSelectedOption("paragraph")}
-                          className="font-lexend"
-                        >
-                          Paragraph
-                        </Menu.Item>
-                        <Menu.Item
-                          rightSection={
-                            <FaHeading className="text-lg text-[#373784]" />
-                          }
-                          onClick={() => setSelectedOption("heading")}
-                          className="font-lexend"
-                        >
-                          Heading
-                        </Menu.Item>
-                        <Menu.Item
-                          rightSection={
-                            <MdImage className="text-lg text-[#373784]" />
-                          }
-                          onClick={() => setSelectedOption("image")}
-                          className="font-lexend"
-                        >
-                          Image
-                        </Menu.Item>
-                        <Menu.Item
-                          rightSection={
-                            <MdFileDownloadDone className="text-lg text-[#373784]" />
-                          }
-                          onClick={handleAddElement}
-                          className="font-lexend"
-                        >
-                          Add {selectedOption}
-                        </Menu.Item>
-                      </Menu.Dropdown>
-                    </Menu>
+                      </SortableContext>
+                      <DragOverlay>
+                        {/* Render active item during drag */}
+                      </DragOverlay>
+                    </DndContext>
+                  )}
+                  {showInput && (
+                    <div className="flex flex-row mt-4 space-x-4">
+                      <Menu position="right" offset={6}>
+                        <Menu.Target>
+                          <div className="w-12">
+                            <Button className="" variant="transparent">
+                              <PiDotsNineBold className="text-4xl text-[#373784] hover:bg-[#e5e5ff] rounded-lg" />
+                            </Button>
+                          </div>
+                        </Menu.Target>
+                        <Menu.Dropdown>
+                          <Menu.Item
+                            rightSection={
+                              <ImParagraphLeft className="text-lg text-[#373784]" />
+                            }
+                            onClick={() => setSelectedOption("paragraph")}
+                            className="font-lexend"
+                          >
+                            Paragraph
+                          </Menu.Item>
+                          <Menu.Item
+                            rightSection={
+                              <FaHeading className="text-lg text-[#373784]" />
+                            }
+                            onClick={() => setSelectedOption("heading")}
+                            className="font-lexend"
+                          >
+                            Heading
+                          </Menu.Item>
+                          <Menu.Item
+                            rightSection={
+                              <MdImage className="text-lg text-[#373784]" />
+                            }
+                            onClick={() => setSelectedOption("image")}
+                            className="font-lexend"
+                          >
+                            Image
+                          </Menu.Item>
+                          <Menu.Item
+                            rightSection={
+                              <MdFileDownloadDone className="text-lg text-[#373784]" />
+                            }
+                            onClick={handleAddElement}
+                            className="font-lexend"
+                          >
+                            Add {selectedOption}
+                          </Menu.Item>
+                        </Menu.Dropdown>
+                      </Menu>
 
-                    {selectedOption === "image" ? (
-                      <input
-                        ref={inputRef}
-                        type="file"
-                        accept="image/*"
-                        multiple // This allows selecting multiple files
-                        onChange={handleImageUpload}
-                        className="hidden"
-                      />
-                    ) : (
-                      <div className="relative w-full">
-                        <textarea
-                          value={text}
-                          ref={textareaRef}
-                          onChange={(e) => setText(e.target.value)}
-                          placeholder={`Type your ${selectedOption} here...`}
-                          className={`relative z-10 w-full px-2 rounded focus:outline-none font-gluteen ${
-                            selectedOption === "heading"
-                              ? "font-bold"
-                              : "text-base"
-                          }`}
-                          style={{
-                            resize: "none",
-                            overflow: "hidden",
-                            minHeight: "2em",
-                            background: "transparent",
-                            lineHeight:
-                              selectedOption === "heading" ? "1.5em" : "1.3em",
-                            fontSize:
-                              selectedOption === "heading" ? "2rem" : "1.5rem",
-                          }}
+                      {selectedOption === "image" ? (
+                        <input
+                          ref={inputRef}
+                          type="file"
+                          accept="image/*"
+                          multiple // This allows selecting multiple files
+                          onChange={handleImageUpload}
+                          className="hidden"
                         />
-                        <div
-                          className="absolute top-0 left-0 z-0 w-full h-full"
-                          style={{
-                            backgroundImage:
-                              "linear-gradient(to bottom, rgba(128, 128, 128, 0.2) 1px, transparent 1px)",
-                            backgroundSize:
+                      ) : (
+                        <div className="relative w-full">
+                          <textarea
+                            value={text}
+                            ref={textareaRef}
+                            onChange={(e) => setText(e.target.value)}
+                            placeholder={`Type your ${selectedOption} here...`}
+                            className={`relative z-10 w-full px-2 rounded focus:outline-none font-gluteen ${
                               selectedOption === "heading"
-                                ? "100% 48px"
-                                : "100% 30px", // Adjust line spacing for heading
-                            filter: "blur(0.5px)",
-                            pointerEvents: "none",
-                          }}
-                        ></div>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {showPlus && elements.length < 6 && (
-                  <div>
-                    <Button
-                      className="flex justify-center"
-                      onClick={handleShowInputClick}
-                      variant="transparent"
-                    >
-                      <FaPlus className="text-3xl text-[#373784] rounded-lg hover:bg-[#e5e5ff]" />
-                    </Button>
-                  </div>
-                )}
+                                ? "font-bold"
+                                : "text-base"
+                            }`}
+                            style={{
+                              resize: "none",
+                              overflow: "hidden",
+                              minHeight: "2em",
+                              background: "transparent",
+                              lineHeight:
+                                selectedOption === "heading"
+                                  ? "1.5em"
+                                  : "1.3em",
+                              fontSize:
+                                selectedOption === "heading"
+                                  ? "2rem"
+                                  : "1.5rem",
+                            }}
+                          />
+                          <div
+                            className="absolute top-0 left-0 z-0 w-full h-full"
+                            style={{
+                              backgroundImage:
+                                "linear-gradient(to bottom, rgba(128, 128, 128, 0.2) 1px, transparent 1px)",
+                              backgroundSize:
+                                selectedOption === "heading"
+                                  ? "100% 48px"
+                                  : "100% 30px", // Adjust line spacing for heading
+                              filter: "blur(0.5px)",
+                              pointerEvents: "none",
+                            }}
+                          ></div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  {showPlus && (
+                    <div>
+                      <Button
+                        className="flex justify-center"
+                        onClick={handleShowInputClick}
+                        variant="transparent"
+                      >
+                        <FaPlus className="text-3xl text-[#373784] rounded-lg hover:bg-[#e5e5ff]" />
+                      </Button>
+                    </div>
+                  )}{" "}
+                </div>
               </div>
-
               <div className="relative w-0.5 bg-transparent ml-4">
                 <div className="absolute inset-y-0 transform -translate-x-1/2 border-l-2 border-gray-400 border-dashed left-1/2"></div>
               </div>
               {/* right page */}
               <div className="flex flex-col w-1/2 h-[80vh] overflow-y-auto journal-scrollbar">
                 {/* Display added elements with drag and drop functionality */}
-                {elements2.length > 0 && (
-                  <DndContext onDragEnd={onDragEnd2}>
-                    <SortableContext items={elements2.map((e) => e.id)}>
-                      <div className="py-4 mt-4 font-gluteen">
-                        {elements2.slice().map((el) => (
-                          <div key={el.id} className="flex flex-row space-x-2">
-                            <div>
-                              {editingId === el.id ? (
-                                <Menu position="right">
-                                  <Menu.Target>
-                                    <div className="w-12">
-                                      <Button variant="transparent">
-                                        <PiDotsNineBold className="text-4xl text-[#373784] rounded-lg hover:bg-[#e5e5ff]" />
-                                      </Button>
-                                    </div>
-                                  </Menu.Target>
-                                  <Menu.Dropdown>
-                                    <Menu.Item
-                                      rightSection={
-                                        <IoCheckmarkDoneSharp className="text-lg text-[#373784]" />
-                                      }
-                                      onClick={() => saveEdit2(el.id)}
-                                      className="font-lexend"
-                                    >
-                                      Save
-                                    </Menu.Item>
-                                  </Menu.Dropdown>
-                                </Menu>
-                              ) : (
-                                <Menu position="right">
-                                  <Menu.Target>
-                                    <div className="w-12">
-                                      <Button variant="transparent">
-                                        <PiDotsNineBold className="text-4xl text-[#373784] rounded-lg hover:bg-[#e5e5ff]" />
-                                      </Button>
-                                    </div>
-                                  </Menu.Target>
-                                  <Menu.Dropdown>
-                                    {el.type !== "image" && (
+                <div ref={containerRef2}>
+                  {elements2.length > 0 && (
+                    <DndContext onDragEnd={onDragEnd2}>
+                      <SortableContext items={elements2.map((e) => e.id)}>
+                        <div className="py-4 mt-4 font-gluteen">
+                          {elements2.slice().map((el) => (
+                            <div
+                              key={el.id}
+                              className="flex flex-row space-x-2"
+                            >
+                              <div>
+                                {editingId === el.id ? (
+                                  <Menu position="right">
+                                    <Menu.Target>
+                                      <div className="w-12">
+                                        <Button variant="transparent">
+                                          <PiDotsNineBold className="text-4xl text-[#373784] rounded-lg hover:bg-[#e5e5ff]" />
+                                        </Button>
+                                      </div>
+                                    </Menu.Target>
+                                    <Menu.Dropdown>
                                       <Menu.Item
                                         rightSection={
-                                          <MdEdit className="text-lg text-[#373784]" />
+                                          <IoCheckmarkDoneSharp className="text-lg text-[#373784]" />
                                         }
-                                        onClick={() =>
-                                          startEditing(
-                                            el.id,
-                                            el.type,
-                                            el.content
-                                          )
-                                        }
+                                        onClick={() => saveEdit2(el.id)}
                                         className="font-lexend"
                                       >
-                                        Edit
+                                        Save
                                       </Menu.Item>
-                                    )}
-                                    <Menu.Item
-                                      rightSection={
-                                        <MdDelete className="text-lg text-[#373784]" />
-                                      }
-                                      onClick={() => deletePara2(el.id)}
-                                      className="font-lexend"
-                                    >
-                                      Delete
-                                    </Menu.Item>
-                                  </Menu.Dropdown>
-                                </Menu>
+                                    </Menu.Dropdown>
+                                  </Menu>
+                                ) : (
+                                  <Menu position="right">
+                                    <Menu.Target>
+                                      <div className="w-12">
+                                        <Button variant="transparent">
+                                          <PiDotsNineBold className="text-4xl text-[#373784] rounded-lg hover:bg-[#e5e5ff]" />
+                                        </Button>
+                                      </div>
+                                    </Menu.Target>
+                                    <Menu.Dropdown>
+                                      {el.type !== "image" && (
+                                        <Menu.Item
+                                          rightSection={
+                                            <MdEdit className="text-lg text-[#373784]" />
+                                          }
+                                          onClick={() =>
+                                            startEditing(
+                                              el.id,
+                                              el.type,
+                                              el.content
+                                            )
+                                          }
+                                          className="font-lexend"
+                                        >
+                                          Edit
+                                        </Menu.Item>
+                                      )}
+                                      <Menu.Item
+                                        rightSection={
+                                          <MdDelete className="text-lg text-[#373784]" />
+                                        }
+                                        onClick={() => deletePara2(el.id)}
+                                        className="font-lexend"
+                                      >
+                                        Delete
+                                      </Menu.Item>
+                                    </Menu.Dropdown>
+                                  </Menu>
+                                )}
+                              </div>
+                              {editingId === el.id ? (
+                                <div className="relative w-full">
+                                  <textarea
+                                    value={editingContent}
+                                    onChange={(e) =>
+                                      setEditingContent(e.target.value)
+                                    }
+                                    placeholder={`Type your ${selectedOption} here...`}
+                                    className={`relative z-10 w-full px-2 rounded focus:outline-none font-gluteen ${
+                                      selectedOption === "heading"
+                                        ? "font-bold"
+                                        : "text-base"
+                                    }`}
+                                    style={{
+                                      resize: "none",
+                                      overflow: "hidden",
+                                      minHeight: "2em",
+                                      background: "transparent",
+                                      lineHeight:
+                                        selectedOption === "heading"
+                                          ? "1.5em"
+                                          : "1.3em",
+                                      fontSize:
+                                        selectedOption === "heading"
+                                          ? "2rem"
+                                          : "1.5rem",
+                                    }}
+                                    ref={textareaRefEdit}
+                                  />
+                                  <div
+                                    className="absolute top-0 left-0 z-0 w-full h-full"
+                                    style={{
+                                      backgroundImage:
+                                        "linear-gradient(to bottom, rgba(128, 128, 128, 0.2) 1px, transparent 1px)",
+                                      backgroundSize:
+                                        selectedOption === "heading"
+                                          ? "100% 48px"
+                                          : "100% 30px",
+                                      filter: "blur(0.5px)",
+                                      pointerEvents: "none",
+                                    }}
+                                  ></div>
+                                </div>
+                              ) : (
+                                <SortableElement
+                                  id={el.id}
+                                  type={el.type}
+                                  content={el.content}
+                                />
                               )}
                             </div>
-                            {editingId === el.id ? (
-                              <div className="relative w-full">
-                                <textarea
-                                  value={editingContent}
-                                  onChange={(e) =>
-                                    setEditingContent(e.target.value)
-                                  }
-                                  placeholder={`Type your ${selectedOption} here...`}
-                                  className={`relative z-10 w-full px-2 rounded focus:outline-none font-gluteen ${
-                                    selectedOption === "heading"
-                                      ? "font-bold"
-                                      : "text-base"
-                                  }`}
-                                  style={{
-                                    resize: "none",
-                                    overflow: "hidden",
-                                    minHeight: "2em",
-                                    background: "transparent",
-                                    lineHeight:
-                                      selectedOption === "heading"
-                                        ? "1.5em"
-                                        : "1.3em",
-                                    fontSize:
-                                      selectedOption === "heading"
-                                        ? "2rem"
-                                        : "1.5rem",
-                                  }}
-                                  ref={textareaRefEdit}
-                                />
-                                <div
-                                  className="absolute top-0 left-0 z-0 w-full h-full"
-                                  style={{
-                                    backgroundImage:
-                                      "linear-gradient(to bottom, rgba(128, 128, 128, 0.2) 1px, transparent 1px)",
-                                    backgroundSize:
-                                      selectedOption === "heading"
-                                        ? "100% 48px"
-                                        : "100% 30px",
-                                    filter: "blur(0.5px)",
-                                    pointerEvents: "none",
-                                  }}
-                                ></div>
-                              </div>
-                            ) : (
-                              <SortableElement
-                                id={el.id}
-                                type={el.type}
-                                content={el.content}
-                              />
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    </SortableContext>
-                    <DragOverlay>
-                      {/* Render active item during drag */}
-                    </DragOverlay>
-                  </DndContext>
-                )}
-                {showInput2 && (
-                  <div className="flex flex-row mt-4 space-x-4">
-                    <Menu position="right" offset={6}>
-                      <Menu.Target>
-                        <div className="w-12">
-                          <Button className="" variant="transparent">
-                            <PiDotsNineBold className="text-4xl text-[#373784] hover:bg-[#e5e5ff] rounded-lg" />
-                          </Button>
+                          ))}
                         </div>
-                      </Menu.Target>
-                      <Menu.Dropdown>
-                        <Menu.Item
-                          rightSection={
-                            <ImParagraphLeft className="text-lg text-[#373784]" />
-                          }
-                          onClick={() => setSelectedOption("paragraph")}
-                          className="font-lexend"
-                        >
-                          Paragraph
-                        </Menu.Item>
-                        <Menu.Item
-                          rightSection={
-                            <FaHeading className="text-lg text-[#373784]" />
-                          }
-                          onClick={() => setSelectedOption("heading")}
-                          className="font-lexend"
-                        >
-                          Heading
-                        </Menu.Item>
-                        <Menu.Item
-                          rightSection={
-                            <MdImage className="text-lg text-[#373784]" />
-                          }
-                          onClick={() => setSelectedOption("image")}
-                          className="font-lexend"
-                        >
-                          Image
-                        </Menu.Item>
-                        <Menu.Item
-                          rightSection={
-                            <MdFileDownloadDone className="text-lg text-[#373784]" />
-                          }
-                          onClick={handleAddElement2}
-                          className="font-lexend"
-                        >
-                          Add {selectedOption}
-                        </Menu.Item>
-                      </Menu.Dropdown>
-                    </Menu>
+                      </SortableContext>
+                      <DragOverlay>
+                        {/* Render active item during drag */}
+                      </DragOverlay>
+                    </DndContext>
+                  )}
+                  {showInput2 && (
+                    <div className="flex flex-row mt-4 space-x-4">
+                      <Menu position="right" offset={6}>
+                        <Menu.Target>
+                          <div className="w-12">
+                            <Button className="" variant="transparent">
+                              <PiDotsNineBold className="text-4xl text-[#373784] hover:bg-[#e5e5ff] rounded-lg" />
+                            </Button>
+                          </div>
+                        </Menu.Target>
+                        <Menu.Dropdown>
+                          <Menu.Item
+                            rightSection={
+                              <ImParagraphLeft className="text-lg text-[#373784]" />
+                            }
+                            onClick={() => setSelectedOption("paragraph")}
+                            className="font-lexend"
+                          >
+                            Paragraph
+                          </Menu.Item>
+                          <Menu.Item
+                            rightSection={
+                              <FaHeading className="text-lg text-[#373784]" />
+                            }
+                            onClick={() => setSelectedOption("heading")}
+                            className="font-lexend"
+                          >
+                            Heading
+                          </Menu.Item>
+                          <Menu.Item
+                            rightSection={
+                              <MdImage className="text-lg text-[#373784]" />
+                            }
+                            onClick={() => setSelectedOption("image")}
+                            className="font-lexend"
+                          >
+                            Image
+                          </Menu.Item>
+                          <Menu.Item
+                            rightSection={
+                              <MdFileDownloadDone className="text-lg text-[#373784]" />
+                            }
+                            onClick={handleAddElement2}
+                            className="font-lexend"
+                          >
+                            Add {selectedOption}
+                          </Menu.Item>
+                        </Menu.Dropdown>
+                      </Menu>
 
-                    {selectedOption === "image" ? (
-                      <input
-                        ref={inputRef}
-                        type="file"
-                        accept="image/*"
-                        multiple // This allows selecting multiple files
-                        onChange={handleImageUpload2}
-                        className="hidden"
-                      />
-                    ) : (
-                      <div className="relative w-full">
-                        <textarea
-                          value={text}
-                          ref={textareaRef}
-                          onChange={(e) => setText(e.target.value)}
-                          placeholder={`Type your ${selectedOption} here...`}
-                          className={`relative z-10 w-full px-2 rounded focus:outline-none font-gluteen ${
-                            selectedOption === "heading"
-                              ? "font-bold"
-                              : "text-base"
-                          }`}
-                          style={{
-                            resize: "none",
-                            overflow: "hidden",
-                            minHeight: "2em",
-                            background: "transparent",
-                            lineHeight:
-                              selectedOption === "heading" ? "1.5em" : "1.3em",
-                            fontSize:
-                              selectedOption === "heading" ? "2rem" : "1.5rem",
-                          }}
+                      {selectedOption === "image" ? (
+                        <input
+                          ref={inputRef}
+                          type="file"
+                          accept="image/*"
+                          multiple // This allows selecting multiple files
+                          onChange={handleImageUpload2}
+                          className="hidden"
                         />
-                        <div
-                          className="absolute top-0 left-0 z-0 w-full h-full"
-                          style={{
-                            backgroundImage:
-                              "linear-gradient(to bottom, rgba(128, 128, 128, 0.2) 1px, transparent 1px)",
-                            backgroundSize:
+                      ) : (
+                        <div className="relative w-full">
+                          <textarea
+                            value={text}
+                            ref={textareaRef}
+                            onChange={(e) => setText(e.target.value)}
+                            placeholder={`Type your ${selectedOption} here...`}
+                            className={`relative z-10 w-full px-2 rounded focus:outline-none font-gluteen ${
                               selectedOption === "heading"
-                                ? "100% 48px"
-                                : "100% 30px", // Adjust line spacing for heading
-                            filter: "blur(0.5px)",
-                            pointerEvents: "none",
-                          }}
-                        ></div>
-                      </div>
-                    )}
-                  </div>
-                )}
+                                ? "font-bold"
+                                : "text-base"
+                            }`}
+                            style={{
+                              resize: "none",
+                              overflow: "hidden",
+                              minHeight: "2em",
+                              background: "transparent",
+                              lineHeight:
+                                selectedOption === "heading"
+                                  ? "1.5em"
+                                  : "1.3em",
+                              fontSize:
+                                selectedOption === "heading"
+                                  ? "2rem"
+                                  : "1.5rem",
+                            }}
+                          />
+                          <div
+                            className="absolute top-0 left-0 z-0 w-full h-full"
+                            style={{
+                              backgroundImage:
+                                "linear-gradient(to bottom, rgba(128, 128, 128, 0.2) 1px, transparent 1px)",
+                              backgroundSize:
+                                selectedOption === "heading"
+                                  ? "100% 48px"
+                                  : "100% 30px", // Adjust line spacing for heading
+                              filter: "blur(0.5px)",
+                              pointerEvents: "none",
+                            }}
+                          ></div>
+                        </div>
+                      )}
+                    </div>
+                  )}
 
-                {elements.length === 6 && elements2.length < 6 && (
-                  <div>
-                    <Button
-                      className="flex justify-center"
-                      onClick={handleShowInputClick2}
-                      variant="transparent"
-                    >
-                      <FaPlus className="text-3xl text-[#373784] rounded-lg hover:bg-[#e5e5ff]" />
-                    </Button>
-                  </div>
-                )}
-              </div>
+                  {showPlus2 && (
+                    <div>
+                      <Button
+                        className="flex justify-center"
+                        onClick={handleShowInputClick2}
+                        variant="transparent"
+                      >
+                        <FaPlus className="text-3xl text-[#373784] rounded-lg hover:bg-[#e5e5ff]" />
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              </div>{" "}
             </div>
           </div>
         </div>
