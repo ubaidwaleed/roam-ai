@@ -758,6 +758,7 @@ const Memory2 = () => {
   const [title, setTitle] = useState("Title"); // Initial state can be props if needed
   const [isPlusIconVisible, setIsPlusIconVisible] = useState(false);
   const [selectedDay, setSelectedDay] = useState("Day 1");
+  const [pageExists, setPageExists] = useState(false);
 
   const navigate = useNavigate();
 
@@ -790,6 +791,7 @@ const Memory2 = () => {
   const handleOptionClick = (option) => {
     if (option === "Add new page") {
       setShowPlus(true);
+      setPageExists(true);
     } else if (option === "Saved Memories") {
       // Add your logic for showing saved memories here
       alert("Saved Memories clicked!");
@@ -798,7 +800,6 @@ const Memory2 = () => {
   };
 
   //---------------------------------------------plus icon when add new page is clicked-------------------//
-
   const [elements, setElements] = useState([]);
   const [elements2, setElements2] = useState([]);
 
@@ -899,8 +900,10 @@ const Memory2 = () => {
         console.log("Container Height:", containerHeight); // Debugging line
         // Check if the container's height is less than 70% of the viewport's height
         if (containerHeight < 0.7 * window.innerHeight) {
-          setShowPlus(true); // Hide the plus icon
-          setShowPlus2(false); // Hide the plus icon
+          if (pageExists) {
+            setShowPlus(true); // Hide the plus icon
+            setShowPlus2(false); // Hide the plus icon
+          }
         } else {
           setShowPlus(false); // Hide the plus icon
           setShowPlus2(true); // Hide the plus icon
@@ -1001,6 +1004,9 @@ const Memory2 = () => {
         const containerHeight = containerRef2.current.clientHeight;
         console.log("Container Height:", containerHeight); // Debugging line
         if (containerHeight < 0.7 * window.innerHeight) {
+          if (elements2.length !== 0) {
+            setShowPlus2(true);
+          }
         } else {
           setShowPlus2(false); // Hide the plus icon
           setShowPlus(false);
