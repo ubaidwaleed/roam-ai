@@ -936,7 +936,7 @@ const Memory2 = () => {
       setSelectedOption("paragraph");
     }
     setShowInput2(false);
-    setShowPlus(true);
+    setShowPlus2(true);
   };
 
   const handleImageUpload2 = (e) => {
@@ -1447,9 +1447,10 @@ const Memory2 = () => {
                   )}{" "}
                 </div>
               </div>
-              <div className="relative w-0.5 bg-transparent ml-4">
+              {/* <div className="relative w-0.5 bg-transparent ml-4">
                 <div className="absolute inset-y-0 transform -translate-x-1/2 border-l-2 border-gray-400 border-dashed left-1/2"></div>
-              </div>
+              </div> */}
+              <div className="h-full ml-4 custom-dashed-line-memory"></div>
               {/* right page */}
               <div className="flex flex-col w-1/2 h-[80vh] overflow-y-auto journal-scrollbar">
                 {/* Display added elements with drag and drop functionality */}

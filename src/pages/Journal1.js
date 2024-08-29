@@ -158,186 +158,188 @@ const TravelJournal = () => {
               </div>
             </div>
             {/* Main Content Area */}
-            <div className="relative flex-1 p-6 mx-3 mb-4 bg-[#ffffff] shadow rounded-b-3xl font-gluteen">
-              <div className="flex justify-between h-full">
-                {/* Left Page */}
-                <div className="w-1/2 pl-3 pr-2">
-                  <div className="flex flex-col mt-4 space-y-16 bg-[#ffffff]">
-                    <div className="flex flex-col space-y-6">
-                      <div>
-                        <h1 className="text-[#373784] text-4xl">Profile</h1>
-                      </div>
-                      <div className="flex flex-row space-x-6">
-                        <div>
-                          <img
-                            alt="Profile picture"
-                            src="/images/girl.png"
-                            className="h-full w-[45vh]"
-                          />
-                        </div>
-                        <div className="flex flex-col mt-4 space-y-4">
-                          <h1 className="text-[#373784] text-4xl">
-                            {USER.username}
-                          </h1>
-                          <h1 className="text-[#9494b1] text-3xl">
-                            {USER.email}
-                          </h1>
-                          <h1 className="text-[#9494b1] text-2xl">
-                            {USER.description}
-                          </h1>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex flex-col space-y-6">
-                      <div>
-                        <h1 className="text-[#373784] text-4xl">Socials</h1>
-                      </div>
+            <div className="relative flex-1 p-6 mx-3 mb-4 bg-[#ffffff] shadow rounded-b-3xl font-gluteen ">
+              <div className="notebook-page">
+                <div className="flex justify-between h-full content">
+                  {/* Left Page */}
+                  <div className="w-1/2 pl-3 pr-2">
+                    <div className="flex flex-col mt-4 space-y-16">
                       <div className="flex flex-col space-y-6">
-                        {USER.socialLinks.map((link) => (
-                          <div
-                            className="flex flex-row space-x-3"
-                            key={link.url}
-                          >
-                            <TbNorthStar className="text-[#373784] text-2xl" />
+                        <div>
+                          <h1 className="text-[#373784] text-4xl">Profile</h1>
+                        </div>
+                        <div className="flex flex-row space-x-6">
+                          <div>
+                            <img
+                              alt="Profile picture"
+                              src="/images/girl.png"
+                              className="h-full w-[45vh]"
+                            />
+                          </div>
+                          <div className="flex flex-col mt-4 space-y-4">
+                            <h1 className="text-[#373784] text-4xl">
+                              {USER.username}
+                            </h1>
+                            <h1 className="text-[#9494b1] text-3xl">
+                              {USER.email}
+                            </h1>
                             <h1 className="text-[#9494b1] text-2xl">
-                              {link.url}
+                              {USER.description}
                             </h1>
                           </div>
-                        ))}
+                        </div>
+                      </div>
+                      <div className="flex flex-col space-y-6">
+                        <div>
+                          <h1 className="text-[#373784] text-4xl">Socials</h1>
+                        </div>
+                        <div className="flex flex-col space-y-6">
+                          {USER.socialLinks.map((link) => (
+                            <div
+                              className="flex flex-row space-x-3"
+                              key={link.url}
+                            >
+                              <TbNorthStar className="text-[#373784] text-2xl" />
+                              <h1 className="text-[#9494b1] text-2xl">
+                                {link.url}
+                              </h1>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                {/* Custom Dashed Line */}
-                <div className="h-full custom-dashed-line"></div>
+                  {/* Custom Dashed Line */}
+                  <div className=" custom-dashed-line"></div>
 
-                {/* Right Page */}
-                <div className="w-1/2 pl-8">
-                  <div className="bg-[#ffffff] flex flex-col space-y-8 mt-4">
-                    <div>
-                      {" "}
-                      <h1 className="text-[#373784] text-4xl ">
-                        August, 2024 Journals (11)
-                      </h1>
-                    </div>
-                    <div className="flex flex-col space-y-8">
-                      {" "}
-                      <div className="flex flex-row justify-between">
-                        <div className="flex flex-row space-x-4">
-                          <h1 className="text-[#a0a0b9] text-2xl">01</h1>
-                          <h1 className="text-[#373784] text-2xl">
-                            My trip & Experience to Baku
-                          </h1>
-                        </div>
-                        <div>
-                          <h1 className="text-[#a0a0b9] text-2xl">
-                            24th Aug 2024 - Monday
-                          </h1>
-                        </div>
+                  {/* Right Page */}
+                  <div className="w-1/2 pl-8">
+                    <div className="flex flex-col mt-4 space-y-8 ">
+                      <div>
+                        {" "}
+                        <h1 className="text-[#373784] text-4xl ">
+                          August, 2024 Journals (11)
+                        </h1>
                       </div>
-                      <div className="flex flex-row justify-between">
-                        <div className="flex flex-row space-x-4">
-                          <h1 className="text-[#a0a0b9] text-2xl">01</h1>
-                          <h1 className="text-[#373784] text-2xl">
-                            My trip & Experience to Baku
-                          </h1>
+                      <div className="flex flex-col space-y-8">
+                        {" "}
+                        <div className="flex flex-row justify-between">
+                          <div className="flex flex-row space-x-4">
+                            <h1 className="text-[#a0a0b9] text-2xl">01</h1>
+                            <h1 className="text-[#373784] text-2xl">
+                              My trip & Experience to Baku
+                            </h1>
+                          </div>
+                          <div>
+                            <h1 className="text-[#a0a0b9] text-2xl">
+                              24th Aug 2024 - Monday
+                            </h1>
+                          </div>
                         </div>
-                        <div>
-                          <h1 className="text-[#a0a0b9] text-2xl">
-                            24th Aug 2024 - Monday
-                          </h1>
+                        <div className="flex flex-row justify-between">
+                          <div className="flex flex-row space-x-4">
+                            <h1 className="text-[#a0a0b9] text-2xl">01</h1>
+                            <h1 className="text-[#373784] text-2xl">
+                              My trip & Experience to Baku
+                            </h1>
+                          </div>
+                          <div>
+                            <h1 className="text-[#a0a0b9] text-2xl">
+                              24th Aug 2024 - Monday
+                            </h1>
+                          </div>
                         </div>
-                      </div>
-                      <div className="flex flex-row justify-between">
-                        <div className="flex flex-row space-x-4">
-                          <h1 className="text-[#a0a0b9] text-2xl">01</h1>
-                          <h1 className="text-[#373784] text-2xl">
-                            My trip & Experience to Baku
-                          </h1>
+                        <div className="flex flex-row justify-between">
+                          <div className="flex flex-row space-x-4">
+                            <h1 className="text-[#a0a0b9] text-2xl">01</h1>
+                            <h1 className="text-[#373784] text-2xl">
+                              My trip & Experience to Baku
+                            </h1>
+                          </div>
+                          <div>
+                            <h1 className="text-[#a0a0b9] text-2xl">
+                              24th Aug 2024 - Monday
+                            </h1>
+                          </div>
                         </div>
-                        <div>
-                          <h1 className="text-[#a0a0b9] text-2xl">
-                            24th Aug 2024 - Monday
-                          </h1>
+                        <div className="flex flex-row justify-between">
+                          <div className="flex flex-row space-x-4">
+                            <h1 className="text-[#a0a0b9] text-2xl">01</h1>
+                            <h1 className="text-[#373784] text-2xl">
+                              My trip & Experience to Baku
+                            </h1>
+                          </div>
+                          <div>
+                            <h1 className="text-[#a0a0b9] text-2xl">
+                              24th Aug 2024 - Monday
+                            </h1>
+                          </div>
                         </div>
-                      </div>
-                      <div className="flex flex-row justify-between">
-                        <div className="flex flex-row space-x-4">
-                          <h1 className="text-[#a0a0b9] text-2xl">01</h1>
-                          <h1 className="text-[#373784] text-2xl">
-                            My trip & Experience to Baku
-                          </h1>
-                        </div>
-                        <div>
-                          <h1 className="text-[#a0a0b9] text-2xl">
-                            24th Aug 2024 - Monday
-                          </h1>
-                        </div>
-                      </div>
-                      <div className="flex flex-row justify-between">
-                        <div className="flex flex-row space-x-4">
-                          <h1 className="text-[#a0a0b9] text-2xl">01</h1>
-                          <h1 className="text-[#373784] text-2xl">
-                            My trip & Experience to Baku
-                          </h1>
-                        </div>
-                        <div>
-                          <h1 className="text-[#a0a0b9] text-2xl">
-                            24th Aug 2024 - Monday
-                          </h1>
-                        </div>
-                      </div>{" "}
-                      <div className="flex flex-row justify-between">
-                        <div className="flex flex-row space-x-4">
-                          <h1 className="text-[#a0a0b9] text-2xl">01</h1>
-                          <h1 className="text-[#373784] text-2xl">
-                            My trip & Experience to Baku
-                          </h1>
-                        </div>
-                        <div>
-                          <h1 className="text-[#a0a0b9] text-2xl">
-                            24th Aug 2024 - Monday
-                          </h1>
-                        </div>
-                      </div>{" "}
-                      <div className="flex flex-row justify-between">
-                        <div className="flex flex-row space-x-4">
-                          <h1 className="text-[#a0a0b9] text-2xl">01</h1>
-                          <h1 className="text-[#373784] text-2xl">
-                            My trip & Experience to Baku
-                          </h1>
-                        </div>
-                        <div>
-                          <h1 className="text-[#a0a0b9] text-2xl">
-                            24th Aug 2024 - Monday
-                          </h1>
-                        </div>
-                      </div>{" "}
-                      <div className="flex flex-row justify-between">
-                        <div className="flex flex-row space-x-4">
-                          <h1 className="text-[#a0a0b9] text-2xl">01</h1>
-                          <h1 className="text-[#373784] text-2xl">
-                            My trip & Experience to Baku
-                          </h1>
-                        </div>
-                        <div>
-                          <h1 className="text-[#a0a0b9] text-2xl">
-                            24th Aug 2024 - Monday
-                          </h1>
-                        </div>
-                      </div>{" "}
-                      <div className="flex flex-row justify-between">
-                        <div className="flex flex-row space-x-4">
-                          <h1 className="text-[#a0a0b9] text-2xl">01</h1>
-                          <h1 className="text-[#373784] text-2xl">
-                            My trip & Experience to Baku
-                          </h1>
-                        </div>
-                        <div>
-                          <h1 className="text-[#a0a0b9] text-2xl">
-                            24th Aug 2024 - Monday
-                          </h1>
+                        <div className="flex flex-row justify-between">
+                          <div className="flex flex-row space-x-4">
+                            <h1 className="text-[#a0a0b9] text-2xl">01</h1>
+                            <h1 className="text-[#373784] text-2xl">
+                              My trip & Experience to Baku
+                            </h1>
+                          </div>
+                          <div>
+                            <h1 className="text-[#a0a0b9] text-2xl">
+                              24th Aug 2024 - Monday
+                            </h1>
+                          </div>
+                        </div>{" "}
+                        <div className="flex flex-row justify-between">
+                          <div className="flex flex-row space-x-4">
+                            <h1 className="text-[#a0a0b9] text-2xl">01</h1>
+                            <h1 className="text-[#373784] text-2xl">
+                              My trip & Experience to Baku
+                            </h1>
+                          </div>
+                          <div>
+                            <h1 className="text-[#a0a0b9] text-2xl">
+                              24th Aug 2024 - Monday
+                            </h1>
+                          </div>
+                        </div>{" "}
+                        <div className="flex flex-row justify-between">
+                          <div className="flex flex-row space-x-4">
+                            <h1 className="text-[#a0a0b9] text-2xl">01</h1>
+                            <h1 className="text-[#373784] text-2xl">
+                              My trip & Experience to Baku
+                            </h1>
+                          </div>
+                          <div>
+                            <h1 className="text-[#a0a0b9] text-2xl">
+                              24th Aug 2024 - Monday
+                            </h1>
+                          </div>
+                        </div>{" "}
+                        <div className="flex flex-row justify-between">
+                          <div className="flex flex-row space-x-4">
+                            <h1 className="text-[#a0a0b9] text-2xl">01</h1>
+                            <h1 className="text-[#373784] text-2xl">
+                              My trip & Experience to Baku
+                            </h1>
+                          </div>
+                          <div>
+                            <h1 className="text-[#a0a0b9] text-2xl">
+                              24th Aug 2024 - Monday
+                            </h1>
+                          </div>
+                        </div>{" "}
+                        <div className="flex flex-row justify-between">
+                          <div className="flex flex-row space-x-4">
+                            <h1 className="text-[#a0a0b9] text-2xl">01</h1>
+                            <h1 className="text-[#373784] text-2xl">
+                              My trip & Experience to Baku
+                            </h1>
+                          </div>
+                          <div>
+                            <h1 className="text-[#a0a0b9] text-2xl">
+                              24th Aug 2024 - Monday
+                            </h1>
+                          </div>
                         </div>
                       </div>
                     </div>

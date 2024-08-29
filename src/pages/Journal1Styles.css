@@ -12,6 +12,7 @@
   background-position: left;
   background-size: 3px 20px;
   background-repeat: repeat-y;
+  min-height: 81vh;
 }
 
 /* In your CSS file */
@@ -19,4 +20,25 @@
   border-radius: 1.25rem !important; /* Using !important to ensure it overrides default styles */
   padding: 2rem;
   background-color: white;
+}
+
+.notebook-page {
+  position: relative;
+  width: 100%;
+  min-height: 81vh;
+  background-color: white;
+  background-image: linear-gradient(transparent 95%, gray 95%);
+  background-size: 100% 40px; /* Adjust the 30px to control line spacing */
+  background-image: linear-gradient(
+    to bottom,
+    rgba(128, 128, 128, 0.2) 1px,
+    transparent 1px
+  );
+  filter: blur(0.5px);
+  pointer-events: none;
+}
+
+.content {
+  position: relative;
+  z-index: 1; /* Ensures the content stays above the background lines */
 }
