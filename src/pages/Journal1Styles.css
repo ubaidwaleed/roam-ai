@@ -34,7 +34,6 @@
     rgba(128, 128, 128, 0.2) 1px,
     transparent 1px
   );
-  filter: blur(0.5px);
   pointer-events: none;
 }
 
