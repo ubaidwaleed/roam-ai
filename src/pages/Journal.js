@@ -141,7 +141,7 @@ const Journal = () => {
 
   const formatDateKey = (date) => format(date, "yyyy-MM-dd");
 
-  const cells = () => {
+  const cells = (journals) => {
     const monthStart = startOfMonth(currentDate);
     const monthEnd = endOfMonth(monthStart);
     const startDate = startOfWeek(monthStart);
@@ -257,6 +257,61 @@ const Journal = () => {
     setCurrentDate(day);
   };
 
+  //------------------------------------------------------------Getting journals and memories-----------------------------------//
+
+  const userId = "66cf734dd44f053e8ca1772e";
+
+  // State to store the fetched journals data
+  const [journals, setJournals] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchJournals = async () => {
+      try {
+        // Fetch the journal IDs
+        const response = await fetch(
+          `http://localhost:5000/api/users/${userId}`
+        );
+        const data = await response.json();
+
+        const journalIds = data.journal_id;
+
+        // Use Promise.all to fetch all journals concurrently
+        const journalData = await Promise.all(
+          journalIds.map((journalId) =>
+            fetch(`http://localhost:5000/api/journals/${journalId}`)
+              .then((response) => response.json())
+              .catch((error) =>
+                console.error(`Error fetching journal ID ${journalId}:`, error)
+              )
+          )
+        );
+
+        // Update state with fetched journals data
+        setJournals(journalData.filter((journal) => journal !== undefined)); // Filter out any undefined results
+        setLoading(false);
+      } catch (error) {
+        setError("Error fetching user journals");
+        setLoading(false);
+      }
+    };
+
+    fetchJournals();
+  }, [userId]);
+
+  // Effect to log the updated journals state
+  useEffect(() => {
+    if (!loading && journals.length > 0) {
+      console.log("Journals:", journals);
+    }
+  }, [journals, loading]);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
+
+  //-------------------------------------------------------------------------------------------------------------------------//
+
   return (
     <div className="flex font-poppins">
       {/* Sidebar on the left */}
@@ -265,8 +320,8 @@ const Journal = () => {
       {/* Main content on the right */}
       <div className="flex-1 my-4 mr-4 rounded-3xl">
         <div className="relative shadow rounded-lg overflow-hidden h-[96.5vh] flex flex-col bg-gray-200 ">
-          {daysAndYearHeader()}
-          {cells()}
+          {daysAndYearHeader(journals)}
+          {cells(journals)}
         </div>{" "}
       </div>
     </div>
